@@ -1,40 +1,56 @@
 <div class="w-screen h-screen flex justify-content-center align-items-center bg-gray-200">
   <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
-    <div class="text-center mb-5">
-      <img src="assets/images/blocks/logos/hyper.svg" alt="Image" height="50" class="mb-3">
-      <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-      <span class="text-600 font-medium line-height-3">Don't have an account?</span>
-      <a [routerLink]="['/signup']" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
-    </div>
-
-    <div>
-      <label for="username" class="block text-900 font-medium mb-2">Username</label>
-      <input id="username" type="text" placeholder="Username" pInputText class="w-full mb-3">
-
-      <label for="password" class="block text-900 font-medium mb-2">Password</label>
-      <input id="password" type="password" placeholder="Password" pInputText class="w-full mb-3">
-
-      <div class="flex align-items-center justify-content-between mb-6">
-        <div class="flex align-items-center">
-          <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-          <label for="rememberme1" class="text-900">Remember me</label>
-        </div>
-        <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
+    <ng-container *ngIf="!loggedIn; else haveUser">
+      <div class="text-center mb-5">
+        <img src="../../../assets/download.png" height="150">
       </div>
 
-      <button pButton pRipple label="Sign In" class="w-full"></button>
-    </div>
-    <p-divider align="center" class="text-gray-500">OR</p-divider>
+      <div class="-mt-5">
+        <label for="username" class="block text-900 font-medium mb-2">Username</label>
+        <input id="username" type="text" placeholder="Username" pInputText class="w-full mb-3">
 
-    <div class="flex">
-      <button pButton pRipple label="Sign In with Google" (click)="loginWithGoogle()"
-        class="w-full mr-3 p-button-outlined p-button-secondary text-red-500  border-gray-300">
-        <i class="pi pi-google" style="font-size: 1.5rem; color: red;"></i>
-      </button>
-      <button pButton pRipple label="Sign In with Facebook" (click)="loginWithFacebook()"
-        class="w-full p-button-outlined p-button-secondary text-blue-500 border-gray-300">
-        <i class="pi pi-facebook" style="font-size: 1.5rem; color: rgb(59, 105, 223);"></i>
-      </button>
-    </div>
+        <label for="password" class="block text-900 font-medium mb-2">Password</label>
+        <input id="password" type="password" placeholder="Password" pInputText class="w-full mb-3">
+
+        <button pButton pRipple label="Sign In" class="w-full mb-3"></button>
+
+        <div class="text-center">
+          <span class="text-center text-sm">Don't have an account?</span>
+          <a [routerLink]="['/signup']" class="text-sm no-underline ml-2 text-blue-500 cursor-pointer">Create
+            account!</a>
+        </div>
+      </div>
+      <p-divider align="center" class="text-gray-500">OR</p-divider>
+
+      <div class="grid">
+        <div class="col-4 flex justify-content-center">
+          <asl-google-signin-button type='standard' size='large' locale="en"></asl-google-signin-button>
+        </div>
+        <div class="col-4 flex justify-content-center">
+          <button pButton pRipple label="Signin with Facebook" (click)="loginWithFacebook()"
+            class="p-button-outlined p-button-secondary p-button-sm text-blue-500 border-gray-300 text-sm  w-full">
+            <i class="pi pi-facebook mr-2" style="font-size: 20px; color: rgb(59, 105, 223);"></i>
+          </button>
+        </div>
+        <div class="col-4 flex justify-content-center p-2">
+          <button pButton pRipple label="Signin with Github" (click)="loginWithGithub()"
+            class="p-button-outlined p-button-secondary p-button-sm border-gray-300 text-sm w-full">
+            <i class="pi pi-github mr-2" style="font-size: 20px"></i>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #haveUser>
+      <div class="flex flex-column justify-content-center align-items-center">
+        <img src="{{ user?.photoUrl }}" height="50" width="50" class="border-circle" referrerpolicy="no-referrer">
+        <div class="mt-3 text-lg font-bold">{{ user?.name }}</div>
+        <div class="mt-3 text-lg">{{ user?.email || ""}}</div>
+        <div class="container mt-5">
+          <button pButton pRipple label="Sign Out" (click)="signOut()"
+            class="p-button-secondary p-button-sm border-gray-300 text-sm w-full">
+          </button>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </div>
